@@ -31,9 +31,19 @@ Vagrant.configure("2") do |config|
     server.vm.network NETWORK
   end
 
-  config.vm.define "agent" do |agent|
-    agent.vm.box = BOX_IMAGE
-    agent.vm.hostname = "zabbix-agent"
-    agent.vm.network NETWORK
+  config.vm.define "proxy" do |proxy|
+    proxy.vm.box = BOX_IMAGE
+    proxy.vm.hostname = "zabbix-proxy"
+    proxy.vm.network NETWORK
   end
+
+  config.vm.define "host" do |host|
+    host.vm.box = BOX_IMAGE
+    host.vm.hostname = "zabbix-host"
+    host.vm.network NETWORK
+  end
+
+  config.vm.provision :shell, path: "bootstrap.sh", run: 'always'
+  config.vm.provision :shell, path: "provision.sh"
+
 end
