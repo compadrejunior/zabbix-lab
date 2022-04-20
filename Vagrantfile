@@ -6,7 +6,7 @@
 # backwards compatibility). Please don't change it unless you know what
 # you're doing.
 
-BOX_IMAGE = "centos/7"
+BOX_IMAGE = "centos/stream8"
 NETWORK = "public_network"
 
 Vagrant.configure("2") do |config|
@@ -29,6 +29,11 @@ Vagrant.configure("2") do |config|
     server.vm.box = BOX_IMAGE
     server.vm.hostname = "zabbix-server"
     server.vm.network NETWORK
+    server.vm.provision :shell, path: "provision-server.sh"
+    server.vm.provision :shell, path: "bootstrap-server.sh", run: 'always'
+    server.vm.provision :shell, inline: <<-SHELL 
+
+    SHELL
   end
 
   config.vm.define "proxy" do |proxy|
@@ -42,8 +47,8 @@ Vagrant.configure("2") do |config|
     host.vm.hostname = "zabbix-host"
     host.vm.network NETWORK
   end
-
-  config.vm.provision :shell, path: "bootstrap.sh", run: 'always'
+  
   config.vm.provision :shell, path: "provision.sh"
+  config.vm.provision :shell, path: "bootstrap.sh", run: 'always'
 
 end
