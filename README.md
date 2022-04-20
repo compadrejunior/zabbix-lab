@@ -171,8 +171,7 @@ Os passos abaixo foram baseados na versão 6.0 do Zabbix. Você pode opcionalmen
 10. Configure o PHP para o frontend Zabbix
 Editar arquivo /etc/nginx/conf.d/zabbix.conf, descomente e defina as diretivas 'listen' e 'server_name'.
 
-11. Inicie o servidor Zabbix e os processos do agente
-Inicie o servidor Zabbix e os processos do agente e configure-os para que sejam iniciados durante o boot do sistema.
+11. Inicie o servidor Zabbix e os processos do agente e configure-os para que sejam iniciados durante o boot do sistema.
 
     ```bash
     sudo systemctl restart zabbix-server zabbix-agent nginx php-fpm
