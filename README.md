@@ -50,7 +50,7 @@ Alguns casos de uso do Zabbix:
             - Arquivos de configuração do ambiente
             - Database (configuração e métricas de monitoramento)
             - Web frontend (administração e visualização de dados)
-            -
+            
     - **Zabbix Proxy**
         - Responsável por intermediar a comunicação entre os ativos monitorados e o Zabbix Server
     - **Zabbix Agent**
@@ -63,7 +63,7 @@ Esse tutorial se baseia em uma máquina Windows 10. Você pode executá-lo no Li
 - **VirtualBox**: Para executar o Lab você precisa instalar o Oracle VirtualBox. Você pode fazer o download do VirtualBox em https://www.virtualbox.org/wiki/Downloads
 - **Git**: você precisa instalar o git e baixar o conteúdo desse repositório. Para instalar o git use o link https://git-scm.com/downloads. Para baixar esse repositório basta executar o comando ```git clone git@github.com:compadrejunior/zabbix-lab.git```
 - **Editor de Texto**: Eu recomendo o uso do Visual Studio Code para visualizar e editar os arquivos desse repositório.
-- **Terminal**: Você pode usar o terminal do Windows mas eu recomendo usar o gitbash por ele utilizar uma sintaxe semelhante à do Linux que eu vou utilizar nesse tutorial. 
+- **Terminal**: Você pode usar o terminal do Windows mas eu recomendo usar o gitbash por ele utilizar uma sintaxe semelhante ao Linux que eu vou utilizar nesse tutorial. 
 
 ## Dependências
 Os pacotes abaixo serão instalados durante o tutorial ou estão pré-configurados e você não precisa baixar antes:
@@ -180,4 +180,4 @@ Inicie o servidor Zabbix e os processos do agente e configure-os para que sejam 
     ```
 
 12. Configure o frontend do Zabbix. Conecte-se ao frontend Zabbix instalado: http://server_ip_or_name
-Siga as etapas descritas na documentação do Zabbix: Instalando frontend
+Siga as etapas descritas na documentação do Zabbix: [Instalando frontend](https://www.zabbix.com/documentation/6.0/manual/installation/install#installing_frontend)
