@@ -31,9 +31,6 @@ Vagrant.configure("2") do |config|
     server.vm.network NETWORK
     server.vm.provision :shell, path: "provision-server.sh"
     server.vm.provision :shell, path: "bootstrap-server.sh", run: 'always'
-    server.vm.provision :shell, inline: <<-SHELL 
-
-    SHELL
   end
 
   config.vm.define "proxy" do |proxy|

@@ -163,10 +163,12 @@ Os passos abaixo foram baseados na versão 6.0 do Zabbix. Você pode opcionalmen
 8. Importe o esquema do Zabbix com o comando abaixo:
 
     ```bash
-    zcat /usr/share/doc/zabbix-sql-scripts/mysql/server.sql.gz | mysql -uzabbix -p zabbix
+    sudo zcat /usr/share/doc/zabbix-sql-scripts/mysql/server.sql.gz | mysql -uzabbix -p zabbix
     ```
 
 9. Configure o banco de dados para o servidor Zabbix. Edite o arquivo /etc/zabbix/zabbix_server.conf informando o parâmetro DBPassword=password, onde password deve ser substituído pela senha do usuário do Zabbix no servidor MySQL. 
+
+10. Configure o arquivo /etc/zabbix/zabbix_agentd.conf, alterando a string Hostname de Hostname=Zabbix Server para Hostname=zabbix-server.
 
 10. Configure o PHP para o frontend Zabbix
 Editar arquivo /etc/nginx/conf.d/zabbix.conf, descomente e defina as diretivas 'listen' e 'server_name'.
@@ -178,5 +180,96 @@ Editar arquivo /etc/nginx/conf.d/zabbix.conf, descomente e defina as diretivas '
     sudo systemctl enable zabbix-server zabbix-agent nginx php-fpm
     ```
 
-12. Configure o frontend do Zabbix. Conecte-se ao frontend Zabbix instalado: http://server_ip_or_name
-Siga as etapas descritas na documentação do Zabbix: [Instalando frontend](https://www.zabbix.com/documentation/6.0/manual/installation/install#installing_frontend)
+## Instalando e configurando o Front-end do Zabbix Server
+
+1. No servidor do Zabbix digite o comando abaixo:
+    ```bash
+    sudo yum install -y wget
+    ```
+
+2. Baixe o pacote do Front-end com o comando abaixo:
+    ```bash
+    wget https://cdn.zabbix.com/zabbix/sources/stable/6.0/zabbix-6.0.3.tar.gz
+    ```
+    > **Observação**: caso o arquivo não esteja disponível ao tentar fazer o download. Procure a versão apropriada em https://www.zabbix.com/download_sources e substitua a URL no comando wget.
+
+3. Descompacte o arquivo:
+    ```bash
+    tar -zxvf zabbix-6.0.3.tar.gz
+    ```
+
+4. Copie os arquivos da interface gráfica para o diretório do html do NGINX com o comando abaixo
+    ```bash
+    sudo cp -r zabbix-6.0.3/ui/ /usr/share/nginx/html/zabbix
+    ```
+5. Edite o arquivo /etc/php.ini e altere os parâmetros abaixo para os valores especificados. 
+
+    | Parâmetro          | Valor |
+    | ------------------ | ----- |
+    | post_max_size      | 16M   |
+    | max_execution_time | 300   |
+    | max_input_time     | 300   |
+
+6. Reinicie os serviços:
+
+    ```bash
+    sudo systemctl restart zabbix-server zabbix-agent nginx php-fpm
+    ```
+
+7. Acesse a interface web pelo browser usando o endereço http://[ip-do-servidor]/zabbix, substituindo [ip-do-servidor] pelo endereço IP do seu servidor do Zabbix. Você pode obter o endereço pelo comando ```ip a``` no terminal do servidor. Por exemplo, http://192.168.0.57/zabbix/
+
+    ![Zabbix UI Setup](zabbix-ui-setup.png "Zabbix UI Setup")
+
+8. Prossiga com a instalação clicando em Next step e verificando se os pré-requisitos estão todos OK depois clique novamente Next step.
+
+    ![Check of pre-requisites](zabbix-requirements-check.png "Check of pre-requisites")
+
+9. Na tela de configuração do banco de dados, forneça a senha de usuário do Zabbix no MySQL criada anteriormente e clique em Next step. 
+
+    ![Configure DB connection](zabbix-configure-db.png "Configure DB connection")
+
+10. Configure o horário correto do seu servidor conforme a tela abaixo e clique ne Next step. 
+
+    ![Timezone Settings](zabbix-timezone-setup.png "Timezone Settings")
+
+11. Clique novamente em Next Step.
+
+    ![Pre-installation summary](zabbix-setup-summary.png "Pre-installation summary")
+
+12. Clique em Next Step. 
+
+    ![Download Configuration File](zabbix-download-configuration.png "Download Configuration File")
+
+13. Faça o download do arquivo e salve o no servidor no caminho /usr/share/nginx/html/zabbix/conf/zabbix.conf.php. O meio mais fácil de fazer isso é salvando o arquivo na pasta do projeto Zabbix-Lab na sua máquina local e depois copiando o arquivo através dos comandos abaixo:
+
+    13.1 Saia da VM
+    
+    ```bash
+    logout
+    ```
+
+    13.2 Instale o plugin vagrant-scp
+    
+    ```bash
+    vagrant scp zabbix.conf.php server:/home/vagrant
+    ```
+    
+    13.3 Entre na VM novamente
+
+    ```bash
+    vagrant ssh server
+    ```
+
+
+    13.3 Copie o arquivo para o diretório /usr/share/nginx/html/zabbix/conf.
+
+    ```bash
+    sudo cp zabbix.conf.php /usr/share/nginx/html/zabbix/conf/zabbix.conf.php
+    ```
+
+14. Volte ao Browser e clique em Next Step
+
+     ![Zabbix Install Finished](zabbix-install-finished.png "Zabbix Install Finished")
+
+15. Clique em Finish.
+
