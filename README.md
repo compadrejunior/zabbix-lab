@@ -191,7 +191,7 @@ Editar arquivo /etc/nginx/conf.d/zabbix.conf, descomente e defina as diretivas '
     ```bash
     wget https://cdn.zabbix.com/zabbix/sources/stable/6.0/zabbix-6.0.3.tar.gz
     ```
-    > **Observação**: caso o arquivo não esteja disponível ao tentar fazer o download. Procure a versão apropriada em https://www.zabbix.com/download_sources e substitua a URL no comando wget.
+    > **Observação**: caso o arquivo não esteja disponível ao tentar fazer o download, procure a versão apropriada em https://www.zabbix.com/download_sources e substitua a URL no comando wget.
 
 3. Descompacte o arquivo:
     ```bash
