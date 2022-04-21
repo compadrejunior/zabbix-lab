@@ -273,3 +273,18 @@ Editar arquivo /etc/nginx/conf.d/zabbix.conf, descomente e defina as diretivas '
 
 15. Clique em Finish.
 
+16. Faça o login usando o usuário Admin e senha zabbix.
+
+    ![Zabbix Login](zabbix-login.png "Zabbix Login")
+
+17. Parabéns! Você entrou no Zabbix
+
+     ![Zabbix Dashboard](zabbix-dashboard.png "Zabbix Dashboard")
+
+18. Para parar todas as vms execute os comandos abaixo.
+
+    ```bash
+    logout
+    vagrant halt -f
+    ```
+
