@@ -331,13 +331,13 @@ Editar arquivo /etc/nginx/conf.d/zabbix.conf, descomente e defina as diretivas '
     /usr/sbin/zabbix_agentd -V
     ```
 
-8. Edite o arquivo /etc/zabbix/zabbix_agentd.conf. Localize os parâmetros abaixo e altere para o valor indicado.
+8. Edite o arquivo /etc/zabbix/zabbix_agentd.conf e altere os parâmetros abaixo para o valor indicado.
 
     | Parâmetro    | Valor         |
     |--------------|---------------|
     | Hostname     | zabbix-host   |
-    | Server       | 192.168.50.51 |
-    | ServerActive | 192.168.50.51 |
+    | Server       | 192.168.56.51 |
+    | ServerActive | 192.168.56.51 |
 
     > **Observação**: O IP do servidor do Zabbix, assim como do host e proxy, foram definidos no arquivo Vagrantfile. Caso necessite definir outro IP altere-o para o valor necessário. 
 
@@ -352,3 +352,22 @@ Editar arquivo /etc/nginx/conf.d/zabbix.conf, descomente e defina as diretivas '
     ```bash
     tail -f -n 100 /var/log/zabbix/zabbix_agentd.log
     ```
+
+## Configurando o Host no Zabbix Server
+1. Acesse a interface gráfica do Zabbix Server pelo browser através da URL, por exemplo, http://192.168.56.51/zabbix
+
+2. Clique em Configuration > Hosts
+
+    ![Setting up the host](zabbix-configure-host.png "Setting up the host")
+
+3. Clique no botão **Create Host**.
+
+    ![Create Host Button](zabbix-create-host-button.png "Create Host Button")
+
+4. Preencha o formulário com as opções abaixo.
+
+    ![Create Host Form](zabbix-configure-host-form.png "Create Host Form")
+
+5. Clique no botão **Add**.
+
+
