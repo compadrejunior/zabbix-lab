@@ -7,7 +7,7 @@
 # you're doing.
 
 BOX_IMAGE = "centos/stream8"
-NETWORK = "public_network"
+NETWORK = "private_network"
 
 Vagrant.configure("2") do |config|
 
@@ -23,12 +23,14 @@ Vagrant.configure("2") do |config|
   # belongs to the master VM.
   config.vm.provider "virtualbox" do |v|
     v.linked_clone = true
+    v.memory = 1024
+    v.cpus = 1
   end
 
   config.vm.define "server" do |server|
     server.vm.box = BOX_IMAGE
     server.vm.hostname = "zabbix-server"
-    server.vm.network NETWORK
+    server.vm.network NETWORK, ip: "192.168.50.51"
     server.vm.provision :shell, path: "provision-server.sh"
     server.vm.provision :shell, path: "bootstrap-server.sh", run: 'always'
   end
@@ -36,13 +38,13 @@ Vagrant.configure("2") do |config|
   config.vm.define "proxy" do |proxy|
     proxy.vm.box = BOX_IMAGE
     proxy.vm.hostname = "zabbix-proxy"
-    proxy.vm.network NETWORK
+    proxy.vm.network NETWORK, ip: "192.168.50.52"
   end
 
   config.vm.define "host" do |host|
     host.vm.box = BOX_IMAGE
     host.vm.hostname = "zabbix-host"
-    host.vm.network NETWORK
+    host.vm.network NETWORK, ip: "192.168.50.53"
   end
   
   config.vm.provision :shell, path: "provision.sh"

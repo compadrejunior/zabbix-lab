@@ -240,7 +240,7 @@ Editar arquivo /etc/nginx/conf.d/zabbix.conf, descomente e defina as diretivas '
 
     ![Download Configuration File](zabbix-download-configuration.png "Download Configuration File")
 
-13. Faça o download do arquivo e salve o no servidor no caminho /usr/share/nginx/html/zabbix/conf/zabbix.conf.php. O meio mais fácil de fazer isso é salvando o arquivo na pasta do projeto Zabbix-Lab na sua máquina local e depois copiando o arquivo através dos comandos abaixo:
+13. Faça o download do arquivo e salve-o no servidor no caminho /usr/share/nginx/html/zabbix/conf/zabbix.conf.php. O meio mais fácil de fazer isso é salvando o arquivo na pasta do projeto Zabbix-Lab na sua máquina local e depois copiando o arquivo através dos comandos abaixo:
 
     13.1 Saia da VM
     
@@ -288,3 +288,67 @@ Editar arquivo /etc/nginx/conf.d/zabbix.conf, descomente e defina as diretivas '
     vagrant halt -f
     ```
 
+## Instalando e configurando o Zabbix Agent
+1. Inicie as máquinas com o comando abaixo:
+
+    ```bash
+    vagrant up
+    ```
+2. Entre no terminal da máquina host:
+
+    ```bash
+    vagrant ssh host
+    ```
+
+3. Instale os pacotes do Zabbix
+
+    ```bash
+    sudo rpm -Uvh https://repo.zabbix.com/zabbix/6.0/rhel/8/x86_64/zabbix-release-6.0-1.el8.noarch.rpm
+
+    sudo dnf clean all
+    ```
+4. Instale o Agente do Zabbix
+
+    ```bash
+    sudo dnf install -y zabbix-agent
+    ```
+
+5. Inicie o serviço do Zabbix Agent
+
+    ```bash
+    sudo systemctl start zabbix-agent
+    ```
+
+6. Habilite o serviço do Zabbix Agent para iniciar durante o boot do host
+
+    ```bash
+    sudo systemctl enable zabbix-agent
+    ```
+
+7. Verifique a versão do Zabbix Agent instalado no host
+
+    ```bash
+    /usr/sbin/zabbix_agentd -V
+    ```
+
+8. Edite o arquivo /etc/zabbix/zabbix_agentd.conf. Localize os parâmetros abaixo e altere para o valor indicado.
+
+    | Parâmetro    | Valor         |
+    |--------------|---------------|
+    | Hostname     | zabbix-host   |
+    | Server       | 192.168.50.51 |
+    | ServerActive | 192.168.50.51 |
+
+    > **Observação**: O IP do servidor do Zabbix, assim como do host e proxy, foram definidos no arquivo Vagrantfile. Caso necessite definir outro IP altere-o para o valor necessário. 
+
+9. Reinicie o serviço do Zabbix Agent
+
+    ```bash
+    sudo systemctl restart zabbix-agent
+    ```
+
+10. Visualize o log do Zabbix Agent para verificar se o serviço do agente está funcionando corretamente. 
+
+    ```bash
+    tail -f -n 100 /var/log/zabbix/zabbix_agentd.log
+    ```
